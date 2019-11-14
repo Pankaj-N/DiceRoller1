@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             //app wont crash if the input box is empty
-            String text_check = Num1.getText().toString();
+            String text_check = Num1.getText().toString(); ///this is not being used
             int Num3 = Integer.parseInt(Num1.getText().toString());
 
 
