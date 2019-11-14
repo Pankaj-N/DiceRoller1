@@ -1,21 +1,25 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
-        int Count= 0;
-        int guessCount = 0;
+        int Count= 0;  //score count
+        int guessCount = 0; //guesscount
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,43 +59,52 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
     public void OnClick(View view){
         TextView RandomNumber = this.findViewById(R.id.textView);
         EditText Num1 = this.findViewById(R.id.editText2);
-        String text_check = Num1.getText().toString();
+
+        try {
+            //app wont crash if the input box is empty
+            String text_check = Num1.getText().toString();
+            int Num3 = Integer.parseInt(Num1.getText().toString());
 
 
 
-        if(text_check.isEmpty()||text_check == null){
 
-            RandomNumber.setText("Please enter a value between 1 - 6");
-        }
-        else{
+           if(Num3 == 0 || Num3 >=7){
 
-            guessCount++;
-            TextView tv = this.findViewById(R.id.num00);
-            TextView guessCounter = this.findViewById(R.id.textView3);
-            Random r = new Random();
-
-            int randNum = r.nextInt(7-1)+1;
-            int Num2 = Integer.parseInt(Num1.getText().toString());
-
-            if(Num2 == randNum){
-                scoreBoard(view);
+                RandomNumber.setText("Please enter a value between 1 - 6");//displays this
             }
+            else{
 
-            if(Num2 != randNum){
-                notMatch(view);
+                guessCount++;
+                TextView tv = this.findViewById(R.id.num00);
+                TextView guessCounter = this.findViewById(R.id.textView3);
+                Random r = new Random();
+
+                int randNum = r.nextInt(7-1)+1;
+                int Num2 = Integer.parseInt(Num1.getText().toString());
+
+                if(Num2 == randNum){
+                    scoreBoard(view);
+                }
+
+                if(Num2 != randNum){
+                    notMatch(view);
+                }
+
+                String CompGen = String.valueOf(randNum);
+
+                tv.setText("Computer Number: \r" + CompGen);
+                RandomNumber.setText("Your Number: \r" + Num2);
+                guessCounter.setText("Guess Counter: \n" + guessCount);
+
             }
-
-            String CompGen = String.valueOf(randNum);
-
-            tv.setText("Computer Number: \r" + CompGen);
-            RandomNumber.setText("Your Number: \r" + Num2);
-            guessCounter.setText("Guess Counter: \n" + guessCount);
+        } catch (Exception ex){
+            Log.e("Error!", "Error!", ex);
 
         }
-
 
 
     }
@@ -101,10 +114,22 @@ public class MainActivity extends AppCompatActivity {
         scoreCard.setText("Your Score: " + Count);
         TextView messageBox = this.findViewById(R.id.textView6);
         messageBox.setText("Congratulations! You earned +1 point");
+        Button Lucky1 = (Button) findViewById(R.id.Button);
+        Lucky1.setVisibility(View.INVISIBLE);
+        Button Lucky = (Button) findViewById(R.id.button);
+        Lucky.setVisibility(View.VISIBLE);
 
     }
     public void notMatch (View view){
         TextView messageBox = this.findViewById(R.id.textView6);
         messageBox.setText("You Lose! You earned 0 points");
     }
+    public void roll_the_dice(View view){
+        Intent myIntent = new Intent (MainActivity.this, second_act.class);
+        startActivity(myIntent);
+
+        }
+
+
 }
+
